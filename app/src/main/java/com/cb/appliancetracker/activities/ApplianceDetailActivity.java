@@ -60,5 +60,7 @@ public class ApplianceDetailActivity extends AppCompatActivity {
                 }
             });
         }).start();
+
+
     }
 }
