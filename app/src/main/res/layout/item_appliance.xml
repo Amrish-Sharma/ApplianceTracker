@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true">
+
+    <TextView
+        android:id="@+id/textViewApplianceName"
+        android:textSize="16sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Appliance Name"
+        android:paddingBottom="4dp"/>
+
+    <TextView
+        android:id="@+id/textViewWarranty"
+        android:textSize="14sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Warranty Expiry: N/A"
+        android:paddingBottom="4dp"/>
+
+    <TextView
+        android:id="@+id/textViewAmc"
+        android:textSize="14sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="AMC Expiry: N/A"
+        android:paddingBottom="4dp"/>
+</LinearLayout>
