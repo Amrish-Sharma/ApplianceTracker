@@ -5,6 +5,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -52,11 +53,14 @@ public class AddApplianceActivity extends AppCompatActivity {
 
                 new Thread(() -> {
                     ApplianceDatabase.getInstance(this).applianceDao().insertAppliance(appliance);
+                    List<Appliance> appliances = ApplianceDatabase.getInstance(this).applianceDao().getAllAppliances();
+                    for (Appliance a : appliances) {
+                        System.out.println("Appliance: " + a.name); // Log appliance names
+                    }
                     runOnUiThread(() -> {
                         Toast.makeText(this, "Appliance added!", Toast.LENGTH_SHORT).show();
                         setResult(RESULT_OK);
                         finish();
-
                     });
                 }).start();
 

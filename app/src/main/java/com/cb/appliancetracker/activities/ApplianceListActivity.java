@@ -35,9 +35,10 @@ public class ApplianceListActivity extends AppCompatActivity {
     private void refreshApplianceList() {
         new Thread(() -> {
             List<Appliance> appliances = ApplianceDatabase.getInstance(this).applianceDao().getAllAppliances();
+            System.out.println("Fetched appliances: " + appliances.size()); // Log the size of the list
             runOnUiThread(() -> {
                 if (applianceAdapter != null) {
-                    applianceAdapter.updateAppliance(appliances); // Update the adapter with new data
+                    applianceAdapter.setAppliances(appliances); // Update the adapter with new data
                 }
             });
         }).start();
