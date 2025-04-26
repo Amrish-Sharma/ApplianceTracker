@@ -30,4 +30,6 @@ public interface ApplianceDao {
 
     @Insert
     void insertAppliance(Appliance appliance);
+
+
 }

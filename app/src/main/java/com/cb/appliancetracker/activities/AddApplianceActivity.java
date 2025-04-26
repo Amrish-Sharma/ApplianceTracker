@@ -1,18 +1,18 @@
 package com.cb.appliancetracker.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
+import java.util.Date;
+import java.util.Locale;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.cb.appliancetracker.R;
 import com.cb.appliancetracker.database.ApplianceDatabase;
 import com.cb.appliancetracker.model.Appliance;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.text.SimpleDateFormat;
 
 public class AddApplianceActivity extends AppCompatActivity {
 
@@ -33,20 +33,35 @@ public class AddApplianceActivity extends AppCompatActivity {
         addButton = findViewById(R.id.buttonAdd);
 
         addButton.setOnClickListener(v -> {
-            Appliance appliance = new Appliance();
-            appliance.name = editTextName.getText().toString();
-            appliance.purchaseDate = Long.parseLong(editTextPurchaseDate.getText().toString());
-            appliance.warrantyExpiry = Long.parseLong(editTextWarrantyDate.getText().toString());
-            appliance.amcExpiry = Long.parseLong(editTextAmcDate.getText().toString());
-            appliance.notes = editTextNotes.getText().toString();
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
-            new Thread(() -> {
-                ApplianceDatabase.getInstance(this).applianceDao().insertAppliance(appliance);
-                runOnUiThread(() -> {
-                    Toast.makeText(this, "Appliance added!", Toast.LENGTH_SHORT).show();
-                    finish(); // Back to list
-                });
-            }).start();
+                Appliance appliance = new Appliance();
+                appliance.name = editTextName.getText().toString();
+                appliance.purchaseDate = sdf.parse(editTextPurchaseDate.getText().toString()).getTime(); // Convert date string to timestamp
+                appliance.warrantyExpiry = sdf.parse(editTextWarrantyDate.getText().toString()).getTime(); // Same here
+
+                String amcDateText = editTextAmcDate.getText().toString();
+                if (!amcDateText.isEmpty()) {
+                    appliance.amcExpiry = sdf.parse(amcDateText).getTime();
+                } else {
+                    appliance.amcExpiry = 0L; // optional field
+                }
+
+                appliance.notes = editTextNotes.getText().toString();
+
+                new Thread(() -> {
+                    ApplianceDatabase.getInstance(this).applianceDao().insertAppliance(appliance);
+                    runOnUiThread(() -> {
+                        Toast.makeText(this, "Appliance added!", Toast.LENGTH_SHORT).show();
+                        finish();
+                    });
+                }).start();
+
+            } catch (Exception e) {
+                Toast.makeText(this, "Invalid date format!", Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
         });
 
     }
