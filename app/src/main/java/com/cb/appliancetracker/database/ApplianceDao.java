@@ -27,4 +27,7 @@ public interface ApplianceDao {
 
     @Query("SELECT * FROM appliances WHERE id = :id")
     Appliance getApplianceById(int id);
+
+    @Insert
+    void insertAppliance(Appliance appliance);
 }

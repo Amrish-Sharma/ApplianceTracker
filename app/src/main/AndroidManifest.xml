@@ -32,6 +32,9 @@
             android:name=".activities.ApplianceDetailActivity"
             android:label="Appliance Details" />
 
+        <activity android:name=".activities.AddApplianceActivity" />
+
+
     </application>
 
 </manifest>

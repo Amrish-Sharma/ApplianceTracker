@@ -1,5 +1,6 @@
 package com.cb.appliancetracker.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -12,12 +13,14 @@ import com.cb.appliancetracker.R;
 import com.cb.appliancetracker.adapter.ApplianceAdapter;
 import com.cb.appliancetracker.database.ApplianceDatabase;
 import com.cb.appliancetracker.model.Appliance;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ApplianceListActivity extends AppCompatActivity {
 
-    private Button addButton;
+    private FloatingActionButton addButton;
     private RecyclerView recyclerView;
     private ApplianceAdapter applianceAdapter;
 
@@ -26,32 +29,34 @@ public class ApplianceListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appliance_list);
 
-        addButton = findViewById(R.id.add_button);
-
+        addButton = findViewById(R.id.fabAdd); // ✅ Now safe
         recyclerView = findViewById(R.id.recyclerViewAppliances);
+
+        List<Appliance> appliances = new ArrayList<>();
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Set up the onClickListener for the Add button
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Start the ApplianceDetailActivity to add a new appliance
-                Intent intent = new Intent(ApplianceListActivity.this, ApplianceDetailActivity.class);
-                startActivity(intent);
-            }
+        applianceAdapter = new ApplianceAdapter(appliances, appliance -> {
+            Intent intent = new Intent(ApplianceListActivity.this, ApplianceDetailActivity.class);
+            intent.putExtra("appliance_id", appliance.id);
+            startActivity(intent);
         });
-        // Fetch appliance data in a background thread
+
+        recyclerView.setAdapter(applianceAdapter);
+
+        addButton.setOnClickListener(v -> {
+            Intent intent = new Intent(ApplianceListActivity.this, AddApplianceActivity.class);
+            startActivity(intent);
+        });
+
         new Thread(() -> {
-            List<Appliance> appliances = ApplianceDatabase.getInstance(this).applianceDao().getAllAppliances();
-            runOnUiThread(() -> {
-                applianceAdapter = new ApplianceAdapter(appliances, appliance -> {
-                    // Navigate to appliance detail activity
-                    Intent intent = new Intent(ApplianceListActivity.this, ApplianceDetailActivity.class);
-                    intent.putExtra("appliance_id", appliance.id);
-                    startActivity(intent);
-                });
-                recyclerView.setAdapter(applianceAdapter);
-            });
+            Context appContext = getApplicationContext();
+            List<Appliance> fetchedAppliances = ApplianceDatabase.getInstance(appContext)
+                    .applianceDao()
+                    .getAllAppliances();
+
+            runOnUiThread(() -> applianceAdapter.updateAppliances(fetchedAppliances));
         }).start();
     }
 }
+

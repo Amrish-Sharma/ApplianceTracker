@@ -33,10 +33,7 @@ public class ApplianceDetailActivity extends AppCompatActivity {
         applianceId = getIntent().getIntExtra("appliance_id", -1);
 
         if (applianceId == -1) {
-            Toast.makeText(this, "Invalid appliance ID", Toast.LENGTH_SHORT).show();
-            finish();
-            return;
-        }
+
 
         // Fetch appliance details from the database
         new Thread(() -> {
@@ -60,6 +57,7 @@ public class ApplianceDetailActivity extends AppCompatActivity {
                 }
             });
         }).start();
+        }
 
 
     }

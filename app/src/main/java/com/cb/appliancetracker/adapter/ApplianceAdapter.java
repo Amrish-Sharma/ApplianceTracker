@@ -17,6 +17,7 @@ public class ApplianceAdapter extends RecyclerView.Adapter<ApplianceAdapter.Appl
 
     private List<Appliance> appliances;
     private OnApplianceClickListener onApplianceClickListener;
+    private List<Appliance> applianceList;
 
     public ApplianceAdapter(List<Appliance> appliances, OnApplianceClickListener listener) {
         this.appliances = appliances;
@@ -45,6 +46,11 @@ public class ApplianceAdapter extends RecyclerView.Adapter<ApplianceAdapter.Appl
         return appliances.size();
     }
 
+    public void updateAppliances(List<Appliance> newAppliances) {
+        this.applianceList = newAppliances;
+        notifyDataSetChanged();
+    }
+
     public interface OnApplianceClickListener {
         void onApplianceClick(Appliance appliance);
     }
@@ -58,6 +64,7 @@ public class ApplianceAdapter extends RecyclerView.Adapter<ApplianceAdapter.Appl
             warrantyTextView = itemView.findViewById(R.id.textViewWarranty);
             amcTextView = itemView.findViewById(R.id.textViewAmc);
         }
+
     }
 }
 
