@@ -54,7 +54,9 @@ public class AddApplianceActivity extends AppCompatActivity {
                     ApplianceDatabase.getInstance(this).applianceDao().insertAppliance(appliance);
                     runOnUiThread(() -> {
                         Toast.makeText(this, "Appliance added!", Toast.LENGTH_SHORT).show();
+                        setResult(RESULT_OK);
                         finish();
+
                     });
                 }).start();
 

@@ -51,7 +51,7 @@ public class ApplianceAdapter extends RecyclerView.Adapter<ApplianceAdapter.Appl
         notifyDataSetChanged();  // Notify the adapter to refresh the RecyclerView
     }
 
-    public void updateAppliances(List<Appliance> newAppliances) {
+    public void updateAppliance(List<Appliance> newAppliances) {
         this.applianceList = newAppliances;
         notifyDataSetChanged();
     }
